@@ -2,13 +2,13 @@ from constants import *
 from socket import*
 
 
-def create_socket(adrres, port):
+def create_socket():
     UDPsocket = socket(AF_INET, SOCK_DGRAM)
 	return UDPsocket
 
-def print_message(message):
+def rdt_send():
 	data = input('Ingrese mensaje: ')
-    print (message)
+    return (data.encode('utf-8'))
 
 def make_pkt(data):
 	pkt = packet(SENDER_PORT, NETWORK_PORT, data)
@@ -32,17 +32,17 @@ def close_socket(socket, signal, frame):
 
 if __name__ == "__main__":
 	# Creamos el socket
-	emisor = crete_socket()
+	cliente = create_socket()
 	# Registramos la senial de salida
 	signal.signal(signal.SIGINT, partial(close_socket, cliente))
 	# Iteramos indefinidamente
 	while True:
 		# Leemos el mensaje desde teclado
-		daa = rdt_send()
+		data = rdt_send()
 		# Hacemos el paquete
-		paquete = make_pkt(data)
+		pkt = make_pkt(data)
 		# Establecemos el destinatario
-		destinatario = (RECEIVER_IP, RECEIVER_PORT)
+		receiver = (RECEIVER_IP, RECEIVER_PORT)
 		# Enviamos el mensaje
-		udp_send(cliente,destinatario, paquete)
+		udp_send(cliente,receiver, pkt)
 	close_socket(cliente)
