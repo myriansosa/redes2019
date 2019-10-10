@@ -18,7 +18,7 @@ def deliver_data(data):
 
 def rdt_rcv(sock):
 	data=sock.recv(2048)
-	paquete=loads(data)
+	paquete=loads(data) # decodifica 
 	return paquete
 
 def close_socket(socket, signal, frame):
