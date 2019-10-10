@@ -1,5 +1,6 @@
 from constants import *
 from socket import *
+from packet import *
 
 
 def create_socket():

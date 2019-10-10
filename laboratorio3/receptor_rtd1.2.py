@@ -1,6 +1,7 @@
 from constants import *
 from pickle import *
 from socket import *
+from packet import *
 
 
 def create_socket():
