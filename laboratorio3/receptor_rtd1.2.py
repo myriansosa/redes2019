@@ -4,9 +4,9 @@ from socket import *
 from packet import *
 
 
-def create_socket():
-	UDPsocket = socket(AF_INET, SOCK_DGARM)
-	UDPsocket.bin((RECEIVER_IP, RECEIVER_PORT))
+def create_socket(address, port):
+	UDPsocket = socket(AF_INET, SOCK_DGRAM)
+	UDPsocket.bind((address, port))
 	return UDPsocket
 
 def extract(packet):
@@ -29,7 +29,7 @@ def close_socket(socket, signal, frame):
 
 if __name__ == "__main__":
 	# Creamos el socket "receiver"
-	servidor = create_socket()
+	receptor = create_socket(RECEIVER_IP, RECEIVER_PORT)
 	# Registramos la senial de salida
 	signal.signal(signal.SIGINT, partial(close_socket, receptor))
 	# Imprimimos el cartel "Listo para recibir mensajes..."

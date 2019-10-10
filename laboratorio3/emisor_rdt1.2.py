@@ -16,7 +16,7 @@ def make_pkt(data):
 	return pkt
 
 def udp_send(socket, receiver, packet):
-	dato = dumps((receiver, packet)) # codifica el paquete
+	dato = dumps((receiver, packet)) 
 	socket.sendto(dato, (NETWORK_IP, NETWORK_PORT))
 
 def close_socket(socket, signal, frame):
