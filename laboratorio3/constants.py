@@ -3,7 +3,7 @@
 """
 constants.py
 """
-from Socket import *
+from socket import *
 from pickle import *
 from packet import *
 import signal
