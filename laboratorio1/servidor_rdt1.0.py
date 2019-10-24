@@ -1,6 +1,8 @@
 from socket import *
+#Importamos el modulo socket
 
 def create_socket(address, port):
+	#Instaciamos un objeto para trabajar con el socket
 	servidor = socket(AF_INET, SOCK_DGRAM)
 	servidor.bind((address, port))
 	return servidor

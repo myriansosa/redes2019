@@ -1,6 +1,8 @@
 from constants import *
 from socket import *
 from packet import *
+import signal
+import sys
 
 
 def create_socket():
@@ -12,7 +14,7 @@ def rdt_send():
 	return (data.encode('utf-8'))
 
 def make_pkt(data):
-	pkt = packet(SENDER_IP, RECEIVER_PORT, data)
+	pkt = Packet(SENDER_PORT, RECEIVER_PORT, data)
 	return pkt
 
 def udp_send(socket, receiver, packet):
@@ -41,5 +43,5 @@ if __name__ == "__main__":
 		# Establecemos el destinatario
 		receiver = (RECEIVER_IP, RECEIVER_PORT)
 		# Enviamos el mensaje
-		udp_send(cliente,receiver, packet)
+		udp_send(cliente,receiver, pkt)
 	close_socket(cliente)

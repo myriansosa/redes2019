@@ -33,6 +33,7 @@ if __name__ == "__main__":
 	print('Red Habilitada')
 	while True:
 		receiver, pckt = recv_pckt(sock)
+		print(pckt.get_data)
 		#deliver_data(pckt)
 		send_pckt(sock, receiver, pckt)
 

@@ -1,6 +1,7 @@
 from socket import *
-#importa toda la libreria de socket
+#importamos modulos para trabajar con sockets
 
+#Creamos un objeto sockets para el servidor
 def create_UDPsocket():
 	UDPsocket=socket(AF_INET, SOCK_DGRAM)
 	return UDPsocket
@@ -12,8 +13,10 @@ def rdt_send():
 	
 def make_pkt(data):
 	return data
-	
+
+#Nos conectamos al servidor	
 def udp_send(socket, data):
+	#El primero es la IP y el segundo el puerto de conexion del servidor
 	socket.sendto(data, ('localhost', 20000))
 	
 def close_socket(socket):
