@@ -1,35 +1,53 @@
 from constantes import *
 from socket import *
+from paquete import *
 
 def create_socket():
-	UDPsocket = socket(AF_INET, SOCK_DGRAM)
-	return UDPsocket
+    UDPsocket = socket(AF_INET, SOCK_DGRAM)
+    return UDPsocket
 
 def rdt_send():
-	data = input('mensaje')
-	return UDPsocket
+    sndpkt = input('mensaje: ' )
+    return (sndpkt.encode('utf-8'))
 
-def make_pkt(data):
-	pkt = packet(SENDER_IP, RECEIVER_PORT,data)
-	return pkt
+def make_pkt(sndpkt):
+    pckt = Paquete(RECEPTOR_PORT, RECEPTOR_PORT, sndpkt, 0)
+    check = calcular_checksum(pckt)
+    pckt.set_checksum(check)
+    return pckt
 
-def udp_send(socket, receiver, paquete):
-	dato= dumps(receiver, packet)
-	socket.sendto((NETWORK_IP, NETWORK_PORT),data)
+def udp_send(socket, pckt, receptor):
+    data= dumps((pckt, receptor)) #comprime
+    socket.sendto(data, (NETWORK_IP, NETWORK_PORT))
+
+def rdt_rcv(socket):
+    #recibe la data de la red, obtengo dato, descomprime data , obtiene el pkt 
+    data=socket.recvfrom(2048)
+    receptor, paquete=loads(data) #descomprimo con load
+    '''print(paquete)'''
+    return emisor, paquete  
 
 def close_socket(socket, signal, frame):
-	print("\n\rCerrando socket")
-	socket.close()
-	exit(0)
+    print("\n\rCerrando socket")
+    socket.close()
+    exit(0)
 
 if __name__ == '__main__':
-	emisor = create_socket()
-	signal.signal(signal.SIGINT, partial(close_socket, cliente))
+    cliente = create_socket()
+    
+    signal.signal(signal.SIGINT, partial(close_socket, cliente))
 
-	while True:
-		data = rdt_send()
-		pkt = make_pkt(data)
-		receiver = (RECEPTOR_IP, RECEPTOR_PORT)
-		udp_send = (emisor, receiver, pkt)
-	close_socket
+    while True:
+        secuencia=0
+        data=rdt_send() # Leemos el mensaje desde teclado
+        rcv_paquete = rdt_rcv(cliente)
+        paquete=make_pkt(data) # Hacemos el paquete
+        destinatario=(RECEPTOR_IP, RECEPTOR_PORT) # Establecemos el destinatario
+        udp_send(cliente, destinatario, paquete) # Enviamos el mensaje
+        if rdt_rcv () and corrupto(paquete) is Ack(rcv_paquete,1):
+            udt_send(paquete)
+        if red_rcv () and not corrupto and  Ack(recv_paquete,0):
+            secuencia = (secuencia + 1) // 2
+
+    close_socket(cliente)
 

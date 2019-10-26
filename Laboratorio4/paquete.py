@@ -40,5 +40,8 @@ def complemento_uno(number):
 def calcular_checksum(packet):
     sum_aux = packet.get_origen() + packet.get_destino()
     sum_aux += packet.get_longitud() + packet.get_checksum()
-    resultado = complement_one(sum_aux)
+    resultado = complemento_uno(sum_aux)
     return resultado
+
+
+	

@@ -8,14 +8,14 @@ from constantes import *
 
 def recv_pckt(socket):
 	data, emisor = socket.recvfrom(1024)
-	receptor, pckt = loads(data)
+	receptor, pckt = loads(data) #descomprime
 	return emisor, receptor, pckt
 
 def send_pckt(socket, emisor, receptor, pckt):
 	data = dumps((emisor, pckt))
 	socket.sendto(data, receptor)
 
-def process_pkt(pckt):
+def process_pkt(pckt): 
 	addrs = (pckt)
 	return pckt, addrs
 
