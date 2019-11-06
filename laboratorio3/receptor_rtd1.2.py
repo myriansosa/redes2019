@@ -10,17 +10,15 @@ def create_socket():
 	return UDPsocket
 
 def extract(packet):
-	data = Packet.get_data()
-	print(data)
+	data = packet.get_data() # habia puesto Packet.get_data por eso no andaba
 	return data
 
 def deliver_data(data):
 	print(data)
 
 def rdt_rcv(sock):
-	data=sock.recv(2048)
+	data=sock.recv(2048) #luego de esta linea estaba printeando y me devolvia la dire de memoria
 	paquete=loads(data) # decodifica 
-	print(paquete)
 	return paquete
 
 
@@ -43,7 +41,7 @@ if __name__ == "__main__":
 		# Recibimos un paquete de la red
 		paquete = rdt_rcv(receptor)
 		# Extraemos los datos
-		data = extrac(packet)
+		data = extract(paquete) #aca pedia un paquete no definido antes. ahora anda
 		#print(data.get_data)
 		# Entregamos los datos a la capa de aplicacion
 		deliver_data(data)

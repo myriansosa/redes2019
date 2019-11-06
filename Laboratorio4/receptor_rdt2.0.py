@@ -20,7 +20,7 @@ def rdt_rcv(socket):#recibe la data de la red, obtengo dato, descomprime data , 
     '''print(paquete)'''
     return emisor, pckt
 
-def make_pkt(datos):
+def make_pkt(receptor, servidor,datos):
     paquete = Paquete(receptor, emisor, datos, 0) #indicamos de dnd sale y a dond tiene q ir
     ckecksum = calcular_checksum(paquete)
     paquete.set_checksum(ckecksum)
@@ -53,21 +53,18 @@ if __name__ == "__main__":
     print("Listo para recibir mensajes...")
 
     # Iteramos indefinidamente
+    secuencia = 0
     while True:
-        secuencia=0
-        #num de id del paquete
-        #pckt = make_pkt(paquete)
-        #servidor, pckt=rdt_rcv(servidor, pckt)
-        #Recibimos un paquete de la red
-        recv_paquete = rdt_rcv(servidor)
-        if recv_paquete and corrupto:
-            sndpkt=make_pkt("NAK")
-            paquete=rdt_rcv(servidor, sndpkt)
-        elif recv_paquete and not corrupto:
-            data=extract(paquete)
-            #Extraemos los datos
-            deliver_data(data)
-            #Entregamos los datos a la cap de aplicacion
-            paquete=make_pkt("ACK",checksum)
+        receptor, pckt = recv_pckt(servidor)
+        recv_paquete = rdt_rcv(servidor) #recibo un paquete
+        if corrupto(pkt):
+            sndpkt=make_pkt(servidor, receptor, datos)#pkt1=crear_paquete('NAK')
+            paquete=rdt_rcv(servidor, sndpkt)       #enviar_paquete(pkt1)
+        elif recv_paquete and not corrupto:		#else:
+            data=extract(paquete)				#pkt2=crear_paquete('ack')
+            #Extraemos los datos				#enviar_paquete(pkt2)
+            deliver_data(data)					#msj=extraer_msj(pkt)
+            #Entregamos los datos a la cap de aplicacion #enviar_mensaje(msj)
+            paquete=make_pkt("ACK",checksum)       #sumar 1
             udt_send(paquete)
     close_socket()
