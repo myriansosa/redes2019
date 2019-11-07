@@ -15,10 +15,15 @@ def deliver_data(message):
     print(message)
 
 def rdt_rcv(socket):#recibe la data de la red, obtengo dato, descomprime data , obtiene el pkt y emisor
-    data, emisor=socket.recvfrom(2048)
-    emisor, pckt=loads(data) #descomprimo con load
-    '''print(paquete)'''
-    return emisor, pckt
+	data =socket.recvfrom(2048)
+	emisor, pckt=loads(data) #descomprimo con load
+	return (emisor, pckt)
+
+def corrupto(paquete):
+    if paquete.set_checksum() == 0:
+        return True
+    else:
+        return False
 
 def make_pkt(receptor, servidor,datos):
     paquete = Paquete(receptor, emisor, datos, 0) #indicamos de dnd sale y a dond tiene q ir
@@ -26,11 +31,6 @@ def make_pkt(receptor, servidor,datos):
     paquete.set_checksum(ckecksum)
     return paquete
 
-def corrupto(paquete):
-    if paquete.set_checksum()== 0:
-        return True
-    else:
-        return False
 
 def udp_send(socket,emisor, paquete): #envia el paq
     datos = dumps(emisor, confirmacion) #comprime
@@ -52,12 +52,12 @@ if __name__ == "__main__":
     # Imprimimos el cartel "Listo para recibir mensajes..."
     print("Listo para recibir mensajes...")
 
-    # Iteramos indefinidamente
+    # iniciamos la variable secuencia en 0
     secuencia = 0
+    # iteramos indefinidamente
     while True:
-        receptor, pckt = recv_pckt(servidor)
-        recv_paquete = rdt_rcv(servidor) #recibo un paquete
-        if corrupto(pkt):
+        (emisor, pckt) = rdt_rcv(servidor)
+        if corrupto(0):
             sndpkt=make_pkt(servidor, receptor, datos)#pkt1=crear_paquete('NAK')
             paquete=rdt_rcv(servidor, sndpkt)       #enviar_paquete(pkt1)
         elif recv_paquete and not corrupto:		#else:

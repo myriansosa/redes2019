@@ -4,13 +4,13 @@ from paquete import *
 from network import *
 
 def create_socket():
-	UDPsocket = socket(AF_INET, SOCK_DGRAM) # creo el socket protocolo de red IP, protocolo transporte UDP
+	UDPsocket = socket(AF_INET, SOCK_DGRAM) 
 	return UDPsocket
 
 
 def rdt_send():
-    data=input('ingrese un mensaje:  ')
-    return(data.encode('utf-8'))
+    data=input('ingrese un mensaje:  ') #escribo mensaje a enviar
+    return(data.encode('utf-8')) #codifico el mensaje 
 
 
 def make_pkt(data):
@@ -34,15 +34,19 @@ def close_socket(socket, signal, frame):
 
 
 if __name__ == "__main__":
-
-	cliente=create_socket() # Creamos el socket
+    # Creamos el socket
+	cliente=create_socket() 
 	
-	signal.signal(signal.SIGINT, partial(close_socket, cliente))#esta funcion toma el socketal final
-    
-	while True: # Iteramos indefinidamente
-		data=rdt_send() # Leemos el mensaje desde teclado
-		paquete=make_pkt(data) # Hacemos el paquete
-		destinatario = (RECEPTOR_IP, RECEPTOR_PORT) # Establecemos el destinatario
-		udp_send(cliente, paquete, destinatario) # Enviamos el mensaje
+	signal.signal(signal.SIGINT, partial(close_socket, cliente))#esta funcion toma el socket al final
+    # Iteramos indefinidamente
+	while True:
+        # Leemos el mensaje desde teclado 
+		data=rdt_send() 
+        # Hacemos el paquete
+		paquete=make_pkt(data)
+        # Establecemos el destinatario 
+		destinatario = (RECEPTOR_IP, RECEPTOR_PORT)
+        # Enviamos el mensaje 
+		udp_send(cliente, paquete, destinatario) 
 	close_socket(cliente)  
 		
